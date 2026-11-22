@@ -7,6 +7,7 @@ export const site = {
   name: "Mrityunjay Kumar",
   firstName: "Mrityunjay",
   lastName: "Kumar",
+  handle: "axel",
   role: "Offensive Security Researcher",
   headline: ["Offensive Security", "Web & API Pentesting", "Vulnerability Research"],
   intro:
@@ -48,6 +49,5 @@ export const nav = [
   { id: "projects", label: "Projects" },
   { id: "research", label: "Research" },
   { id: "arsenal", label: "Arsenal" },
-  { id: "certification", label: "Certification" },
   { id: "contact", label: "Contact" },
 ] as const;

@@ -1,4 +1,5 @@
 import { site } from "@/content/site";
+import { certifications } from "@/content/credentials";
 import { CtaLink, TextLink } from "@/components/ui/button-link";
 import { Parallax } from "@/components/ui/parallax";
 import { SurfaceMap } from "./surface-map";
@@ -24,41 +25,66 @@ export function Hero() {
           {site.role}
         </p>
 
-        <Parallax distance={-90} fade>
-          <h1
-            id="hero-title"
-            className="display mt-6 text-[clamp(3.4rem,13vw,10.5rem)] text-fg"
-            aria-label={site.name}
-          >
-            <span className="line-mask" aria-hidden="true">
-              <span style={{ "--d": "150ms" } as React.CSSProperties}>{site.firstName}</span>
-            </span>
-            <span className="line-mask" aria-hidden="true">
-              <span style={{ "--d": "260ms" } as React.CSSProperties} className="text-muted">
-                {site.lastName}
-                <span className="text-accent">.</span>
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <Parallax distance={-90} fade>
+            <h1
+              id="hero-title"
+              className="display mt-6 text-[clamp(3.4rem,13vw,10.5rem)] text-fg"
+              aria-label={site.name}
+            >
+              <span className="line-mask" aria-hidden="true">
+                <span style={{ "--d": "150ms" } as React.CSSProperties}>{site.firstName}</span>
               </span>
+              <span className="line-mask" aria-hidden="true">
+                <span style={{ "--d": "260ms" } as React.CSSProperties} className="text-muted">
+                  {site.lastName}
+                  <span className="text-accent">.</span>
+                </span>
+              </span>
+            </h1>
+          </Parallax>
+
+          <ul
+            className="fade-in flex flex-wrap gap-2 lg:mb-6 lg:flex-col lg:items-end"
+            style={{ "--d": "700ms" } as React.CSSProperties}
+            aria-label="Certifications"
+          >
+            {certifications.map((c) => (
+              <li
+                key={c.short}
+                title={`${c.name} — ${c.issuer}`}
+                className="inline-flex items-center gap-2.5 rounded-[3px] border border-line-strong bg-surface/70 px-4 py-2.5 text-[13px] font-medium text-fg backdrop-blur-sm"
+              >
+                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-accent" />
+                {c.short}
+                <span className="sr-only">
+                  {" "}
+                  — {c.name}, {c.issuer}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <p
+          className="fade-in mt-8 flex flex-wrap items-baseline gap-x-2.5 gap-y-1 font-display text-[clamp(1.15rem,2vw,1.6rem)] font-medium text-muted"
+          style={{ "--d": "500ms" } as React.CSSProperties}
+        >
+          <span className="font-semibold text-fg">{site.handle}</span>
+          {site.headline.map((h) => (
+            <span key={h} className="flex items-baseline gap-2.5">
+              <span className="text-subtle" aria-hidden="true">·</span>
+              {h}
             </span>
-          </h1>
-        </Parallax>
+          ))}
+        </p>
 
         <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-7">
-            <ul
-              className="fade-in flex flex-wrap gap-x-3 gap-y-2 font-mono text-[12px] tracking-[0.06em] text-fg uppercase sm:text-[13px]"
-              style={{ "--d": "500ms" } as React.CSSProperties}
-              aria-label="Focus areas"
-            >
-              {site.headline.map((h, i) => (
-                <li key={h} className="flex items-center gap-3">
-                  {i > 0 && <span className="text-subtle" aria-hidden="true">/</span>}
-                  {h}
-                </li>
-              ))}
-            </ul>
+
 
             <p
-              className="fade-in mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
+              className="fade-in max-w-xl text-base leading-relaxed text-muted sm:text-lg"
               style={{ "--d": "620ms" } as React.CSSProperties}
             >
               {site.intro}
