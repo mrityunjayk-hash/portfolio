@@ -42,3 +42,7 @@ next-env.d.ts
 
 # allow the documented env template
 !.env.example
+
+# Clash Display is fetched at build time (license forbids redistribution via public repos)
+/src/fonts/clash-display/*.woff2
+/src/fonts/clash-display/*.ttf

@@ -21,6 +21,10 @@ npm run dev                  # http://localhost:3000
 | `npm start`     | Serve the production build      |
 | `npm run lint`  | ESLint                          |
 
+### Fonts
+
+Clash Display (headings) comes from Fontshare under the ITF Free Font License, which allows self-hosting on this site but not redistributing the files through a public repository. The font files are therefore git-ignored and `scripts/fetch-fonts.mjs` downloads them automatically before every `npm run dev` and `npm run build` (including on Vercel). Inter and Fira Code are loaded through `next/font/google`.
+
 ## Updating content
 
 All content lives in typed files under `src/content/` — no component changes needed.

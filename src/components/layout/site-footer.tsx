@@ -22,6 +22,11 @@ export function SiteFooter() {
             </a>
           </li>
           <li>
+            <a href={site.sourceRepo} target="_blank" rel="noopener noreferrer" className="hover:text-fg">
+              Site source
+            </a>
+          </li>
+          <li>
             <Link href="/#home" className="hover:text-fg">
               Back to top ↑
             </Link>

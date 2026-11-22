@@ -16,6 +16,7 @@ export const site = {
     "Mrityunjay Kumar — offensive security researcher focused on web & API penetration testing, access-control and authentication vulnerabilities, AI/LLM application security and security tool development.",
   currentFocus: "Security of LLM applications, RAG pipelines and tool-using agents",
   email: "mrityunjayk1812@gmail.com",
+  sourceRepo: "https://github.com/mrityunjayk-hash/portfolio",
   // Set NEXT_PUBLIC_SITE_URL in Vercel once the final domain is known.
   url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://mrityunjay-kumar.vercel.app").replace(/\/$/, ""),
   locale: "en_US",
