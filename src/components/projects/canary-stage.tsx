@@ -147,13 +147,16 @@ export function CanaryStage() {
 
 function Act({ label, hint }: { label: string; hint: string }) {
   return (
-    <p className="flex items-center gap-3 text-[14px]">
-      <span aria-hidden="true" className="relative z-10 h-[19px] w-[19px] rounded-full border border-line-strong bg-bg p-[5px]">
+    <div>
+      {/* node sits on the thread; the label stays clear of it */}
+      <span aria-hidden="true" className="relative z-10 block h-[19px] w-[19px] rounded-full border border-line-strong bg-bg p-[5px]">
         <span className="block h-full w-full rounded-full bg-accent" />
       </span>
-      <span className="font-display text-lg font-medium text-fg">{label}</span>
-      <span className="text-subtle">{hint}</span>
-    </p>
+      <p className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[14px]">
+        <span className="font-display text-lg font-medium text-fg">{label}</span>
+        <span className="text-subtle">{hint}</span>
+      </p>
+    </div>
   );
 }
 
