@@ -1,0 +1,27 @@
+{/*
+  Copy this file to src/content/research/<your-slug>.mdx (no leading underscore)
+  to publish an article at /research/<your-slug>. Set draft: true to keep it
+  out of production builds while you write.
+
+  category must be one of: web, vuln-research, ai, pentest, ctf, engineering, experiments
+*/}
+
+export const metadata = {
+  title: "Article title",
+  summary: "One or two sentences shown in the research index and social previews.",
+  category: "web",
+  date: "2026-01-01",
+  tags: ["Burp Suite", "Access control"],
+  draft: true,
+}
+
+## Context
+
+Write in plain Markdown. Code blocks, lists, links and quotes are styled automatically.
+
+```http
+GET /api/v1/example HTTP/1.1
+Host: lab.example
+```
+
+> Never publish details from private programs without explicit permission.
