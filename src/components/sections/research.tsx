@@ -12,18 +12,14 @@ export async function Research() {
         <SectionHeading
           label="Research"
           id="research-title"
-          title={
-            <>
-              Research &amp; writeups <span className="text-muted">— notes from the field.</span>
-            </>
-          }
+          title={["Research & writeups", { text: "— notes from the field.", muted: true }]}
           lead="Technical writeups on web, API and AI application security. Findings from private programs stay private; what gets published here is cleared for disclosure or comes from my own labs and tools."
         />
 
         <ResearchIndex posts={posts} />
 
         <div className="mt-20">
-          <div className="mb-6 flex items-baseline justify-between gap-4" data-reveal>
+          <div className="mb-6 flex items-baseline justify-between gap-4" data-reveal="left">
             <h3 className="label-mono">Areas of focus</h3>
             <p className="label-mono hidden text-subtle sm:block">Vulnerability classes I spend the most time on</p>
           </div>
@@ -31,7 +27,7 @@ export async function Research() {
             {researchFocus.map((f, i) => (
               <li
                 key={f.code}
-                data-reveal
+                data-reveal="left"
                 style={{ "--reveal-delay": `${i * 60}ms` } as React.CSSProperties}
                 className="group grid gap-2 border-b border-line py-6 transition-colors duration-500 md:grid-cols-12 md:items-baseline md:gap-6"
               >

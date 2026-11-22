@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, Check, Loader2, TriangleAlert } from "lucide-react";
+import { Magnetic } from "@/components/ui/magnetic";
 import { contactSchema, type ContactField, type ContactResponse } from "@/lib/contact";
 
 type Status = "idle" | "submitting" | "success" | "error";
@@ -182,10 +183,11 @@ export function ContactForm() {
               )}
             </AnimatePresence>
 
+            <Magnetic className="mt-2 self-start">
             <button
               type="submit"
               disabled={status === "submitting"}
-              className="group mt-2 inline-flex h-12 items-center justify-center gap-3 self-start rounded-[2px] bg-accent pr-5 pl-6 text-[14px] font-medium text-[#0a0b0d] transition-shadow duration-300 hover:shadow-[0_0_0_4px_rgba(198,244,50,0.12)] disabled:cursor-wait disabled:opacity-70"
+              className="group inline-flex h-12 items-center justify-center gap-3 rounded-[2px] bg-accent pr-5 pl-6 text-[14px] font-medium text-[#0a0b0d] transition-shadow duration-300 hover:shadow-[0_0_0_4px_rgba(198,244,50,0.12)] disabled:cursor-wait disabled:opacity-70"
             >
               {status === "submitting" ? (
                 <>
@@ -197,6 +199,7 @@ export function ContactForm() {
                 </>
               )}
             </button>
+            </Magnetic>
             <p className="sr-only" aria-live="polite">
               {status === "submitting" ? "Sending message" : ""}
             </p>

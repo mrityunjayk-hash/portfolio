@@ -6,6 +6,7 @@ import { site, socials } from "@/content/site";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { RevealObserver } from "@/components/ui/reveal-observer";
+import { CursorFollower } from "@/components/ui/cursor-follower";
 import "./globals.css";
 
 // Typography system: Clash Display (headings), Inter (body, navigation), Fira Code (technical labels, code).
@@ -94,6 +95,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <SiteFooter />
         </MotionConfig>
         <RevealObserver />
+        <CursorFollower />
       </body>
     </html>
   );

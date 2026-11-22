@@ -16,7 +16,7 @@ export function ResearchIndex({ posts }: { posts: Post[] }) {
   const shown = filter === "all" ? posts : posts.filter((p) => p.category === filter);
 
   return (
-    <div data-reveal>
+    <div data-reveal="blur">
       <div className="mb-6 flex flex-wrap gap-x-6 gap-y-1" role="group" aria-label="Filter by category">
         <Chip active={filter === "all"} onClick={() => setFilter("all")} count={posts.length}>
           All

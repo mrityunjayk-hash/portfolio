@@ -17,7 +17,20 @@ const LABELS = [
   "authz?", "owner == caller?", "SYN → SYN/ACK", "RST",
 ];
 
-type Node = { x: number; y: number; r: number; label: string; heat: number; probe: number; hub: boolean };
+type Node = {
+  x: number;
+  y: number;
+  bx: number;
+  by: number;
+  ph: number;
+  r: number;
+  label: string;
+  heat: number;
+  probe: number;
+  hub: boolean;
+};
+/** A packet travelling along an edge; `t` runs 0→1 from `from` to the other end. */
+type Packet = { edge: number; from: number; t: number; speed: number };
 
 function rng(seed: number) {
   return () => {
@@ -43,6 +56,9 @@ export function SurfaceMap({ className = "" }: { className?: string }) {
     let dpr = 1;
     let nodes: Node[] = [];
     let edges: [number, number][] = [];
+    let adjacency: number[][] = [];
+    let packets: Packet[] = [];
+    let time = 0;
     let raf = 0;
     let running = false;
     let sweep = 0;
@@ -59,9 +75,14 @@ export function SurfaceMap({ className = "" }: { className?: string }) {
         for (let c = 0; c < cols; c++) {
           if (rand() < 0.42) continue;
           const hub = rand() < 0.12;
+          const x = c * cell + (rand() - 0.5) * cell * 0.7;
+          const y = r * cell + (rand() - 0.5) * cell * 0.7;
           nodes.push({
-            x: c * cell + (rand() - 0.5) * cell * 0.7,
-            y: r * cell + (rand() - 0.5) * cell * 0.7,
+            x,
+            y,
+            bx: x,
+            by: y,
+            ph: rand() * Math.PI * 2,
             r: hub ? 2.4 : 1.4,
             label: LABELS[Math.floor(rand() * LABELS.length)],
             heat: 0,
@@ -79,6 +100,16 @@ export function SurfaceMap({ className = "" }: { className?: string }) {
           if (dx * dx + dy * dy < max * max && (nodes[i].hub || nodes[j].hub || rand() < 0.35)) edges.push([i, j]);
         }
       }
+      adjacency = nodes.map(() => []);
+      edges.forEach(([a, b], e) => {
+        adjacency[a].push(e);
+        adjacency[b].push(e);
+      });
+      // a handful of packets hopping across the network
+      packets = Array.from({ length: Math.min(6, Math.floor(edges.length / 12)) }, () => {
+        const edge = Math.floor(rand() * edges.length);
+        return { edge, from: edges[edge][0], t: rand(), speed: 0.00035 + rand() * 0.00035 };
+      });
     };
 
     const resize = () => {
@@ -98,6 +129,25 @@ export function SurfaceMap({ className = "" }: { className?: string }) {
       const band = 140;
       if (!reduce) sweep = (sweep + dt * 0.06) % (w + band * 2);
       const sx = reduce ? -9999 : sweep - band;
+      time += dt;
+
+      // gentle drift, plus a slight pull toward the cursor
+      for (const n of nodes) {
+        let x = n.bx + (reduce ? 0 : Math.sin(time * 0.00042 + n.ph) * 6);
+        let y = n.by + (reduce ? 0 : Math.cos(time * 0.00036 + n.ph * 1.3) * 6);
+        if (pointer.active) {
+          const dx = pointer.x - x;
+          const dy = pointer.y - y;
+          const d = Math.hypot(dx, dy);
+          if (d > 1 && d < 220) {
+            const pull = (1 - d / 220) * 14;
+            x += (dx / d) * pull;
+            y += (dy / d) * pull;
+          }
+        }
+        n.x = x;
+        n.y = y;
+      }
 
       for (const n of nodes) {
         const d = Math.abs(n.x - sx);
@@ -119,6 +169,42 @@ export function SurfaceMap({ className = "" }: { className?: string }) {
         ctx.moveTo(A.x, A.y);
         ctx.lineTo(B.x, B.y);
         ctx.stroke();
+      }
+
+      // packets: small lime pulses that hop from edge to edge
+      if (!reduce) {
+        for (const p of packets) {
+          p.t += dt * p.speed;
+          if (p.t >= 1) {
+            const [a, b] = edges[p.edge];
+            const at = p.from === a ? b : a;
+            const next = adjacency[at].filter((e) => e !== p.edge);
+            p.edge = next.length ? next[Math.floor(Math.random() * next.length)] : p.edge;
+            p.from = next.length ? at : p.from === a ? b : a;
+            p.t = 0;
+          }
+          const [a, b] = edges[p.edge];
+          const A = nodes[p.from === a ? a : b];
+          const B = nodes[p.from === a ? b : a];
+          const x = A.x + (B.x - A.x) * p.t;
+          const y = A.y + (B.y - A.y) * p.t;
+          const tx = A.x + (B.x - A.x) * Math.max(0, p.t - 0.18);
+          const ty = A.y + (B.y - A.y) * Math.max(0, p.t - 0.18);
+          const g = ctx.createLinearGradient(tx, ty, x, y);
+          g.addColorStop(0, "rgba(198,244,50,0)");
+          g.addColorStop(1, "rgba(198,244,50,0.55)");
+          ctx.strokeStyle = g;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.moveTo(tx, ty);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+          ctx.fillStyle = "rgba(198,244,50,0.85)";
+          ctx.beginPath();
+          ctx.arc(x, y, 1.6, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.lineWidth = 1;
       }
 
       // sweep line

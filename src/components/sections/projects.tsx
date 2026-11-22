@@ -13,11 +13,7 @@ export function Projects() {
         <SectionHeading
           label="Projects"
           id="projects-title"
-          title={
-            <>
-              Tools I built to understand <span className="text-muted">how attacks actually work.</span>
-            </>
-          }
+          title={["Tools I built to understand", { text: "how attacks actually work.", muted: true }]}
           lead="Both are open source, dependency-free Python. The demonstrations below are interactive illustrations of how each tool works — not screenshots."
         />
       </div>

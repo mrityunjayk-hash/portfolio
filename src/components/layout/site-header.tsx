@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
 import { nav, site, socials } from "@/content/site";
 import { SocialIcon } from "@/components/ui/icons";
@@ -13,6 +13,8 @@ export function SiteHeader() {
   const isHome = pathname === "/";
   const [active, setActive] = useState<string>("home");
   const [scrolled, setScrolled] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 160, damping: 30, mass: 0.3 });
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -136,6 +138,10 @@ export function SiteHeader() {
                         />
                       )}
                       {item.label}
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-x-0 bottom-1 h-px origin-right scale-x-0 bg-fg/40 transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100"
+                      />
                     </Link>
                   </li>
                 );
@@ -185,6 +191,12 @@ export function SiteHeader() {
             </button>
           </div>
         </div>
+        {/* reading progress */}
+        <motion.div
+          aria-hidden="true"
+          className="absolute inset-x-0 -bottom-px h-px origin-left bg-accent/70"
+          style={{ scaleX: progress }}
+        />
       </header>
 
       <AnimatePresence>

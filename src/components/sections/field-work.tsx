@@ -1,3 +1,4 @@
+import { RevealWords } from "@/components/ui/reveal-words";
 import { fieldWork } from "@/content/credentials";
 import { TechMark } from "@/components/ui/tech-mark";
 
@@ -6,17 +7,17 @@ export function FieldWork() {
     <section id="field-work" aria-labelledby="field-work-title" className="relative border-t border-line py-24 sm:py-32">
       <div className="container-x">
         <div className="max-w-4xl">
-          <p className="font-display text-2xl font-medium text-fg" data-reveal>
+          <p className="font-display text-2xl font-medium text-fg" data-reveal="left">
             Field work
           </p>
-          <h2 id="field-work-title" className="display mt-6 text-4xl sm:text-5xl" data-reveal>
-            Where the practice happens.
+          <h2 id="field-work-title" className="display mt-6 text-4xl sm:text-5xl" data-reveal="words">
+            <RevealWords segments={["Where the practice happens."]} />
           </h2>
           <ol className="mt-10 border-t border-line">
             {fieldWork.map((f, i) => (
               <li
                 key={f.title}
-                data-reveal
+                data-reveal="left"
                 style={{ "--reveal-delay": `${i * 80}ms` } as React.CSSProperties}
                 className="grid gap-3 border-b border-line py-7 sm:grid-cols-[2.5rem_1fr]"
               >

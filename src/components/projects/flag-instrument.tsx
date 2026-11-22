@@ -1,7 +1,7 @@
 "use client";
 
-import { useId, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useId, useRef, useState } from "react";
+import { AnimatePresence, motion, useInView } from "motion/react";
 import { FLAGS, SCANS } from "./scan-data";
 
 /**
@@ -29,6 +29,12 @@ export function FlagInstrument() {
   const [scanId, setScanId] = useState("xmas");
   const scan = SCANS.find((s) => s.id === scanId)!;
   const isUdp = scan.proto === "UDP";
+  // "Boot" the instrument the first time it scrolls into view.
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(rootRef, { once: true, margin: "0px 0px -20% 0px" });
+  // Markup must not depend on the reduced-motion setting (it differs between
+  // server and client), so booting is driven only by visibility.
+  const booted = inView;
   const byte = FLAGS.reduce((acc, f, i) => (scan.flags.includes(f) ? acc | (1 << (7 - i)) : acc), 0);
   const probeLabel = isUdp ? "UDP datagram" : scan.flags.length ? scan.flags.join(" · ") : "no flags";
   const bytes = headerBytes(isUdp, byte);
@@ -44,7 +50,7 @@ export function FlagInstrument() {
   };
 
   return (
-    <div className="@container">
+    <div ref={rootRef} className="@container">
       {/* scan technique */}
       <div role="tablist" aria-label="Scan technique" onKeyDown={onKeyDown} className="-ml-0.5 flex flex-wrap gap-x-6 gap-y-1 @xl:gap-x-8">
         {SCANS.map((s) => {
@@ -105,9 +111,15 @@ export function FlagInstrument() {
           </div>
 
           <ol aria-label="TCP flag bits" className={`relative mt-4 grid grid-cols-8 transition-opacity duration-500 ${isUdp ? "opacity-30" : ""}`}>
-            <span aria-hidden="true" className={`absolute inset-x-0 top-12 h-px ${isUdp ? "border-t border-dashed border-line-strong" : "bg-line-strong"}`} />
+            <motion.span
+              aria-hidden="true"
+              className={`absolute inset-x-0 top-12 h-px origin-left ${isUdp ? "border-t border-dashed border-line-strong" : "bg-line-strong"}`}
+              initial={false}
+              animate={{ scaleX: booted ? 1 : 0 }}
+              transition={{ duration: 1.1, ease }}
+            />
             {FLAGS.map((f, i) => {
-              const on = !isUdp && scan.flags.includes(f);
+              const on = booted && !isUdp && scan.flags.includes(f);
               return (
                 <li key={f} className="relative flex flex-col items-center" aria-label={`${f} ${on ? "set" : "not set"}`}>
                   <div aria-hidden="true" className="relative h-12 w-full">
@@ -164,9 +176,15 @@ export function FlagInstrument() {
                           {b.hex}
                         </motion.span>
                       ) : (
-                        <span key={`${row}-${i}`} className={b.dim ? "text-subtle/60" : "text-muted"}>
+                        <motion.span
+                          key={`${row}-${i}`}
+                          className={b.dim ? "text-subtle/60" : "text-muted"}
+                          initial={false}
+                          animate={{ opacity: booted ? 1 : 0 }}
+                          transition={{ duration: 0.25, delay: booted ? 0.5 + (row * 8 + i) * 0.03 : 0 }}
+                        >
                           {b.hex}
-                        </span>
+                        </motion.span>
                       ),
                     )}
                   </span>
@@ -192,9 +210,9 @@ export function FlagInstrument() {
               <span aria-hidden="true" className="absolute inset-y-0 left-[7.5rem] w-px bg-line @xl:left-[8.5rem]" />
               <span aria-hidden="true" className="absolute inset-y-0 right-[3rem] w-px bg-line @xl:right-[4.5rem]" />
 
-              <Exchange key={`probe-${scanId}`} dir="out" label={probeLabel} index={0} />
+              {booted && <Exchange key={`probe-${scanId}`} dir="out" label={probeLabel} index={0} />}
               <AnimatePresence mode="popLayout" initial={false}>
-                {scan.outcomes.map((o, i) => (
+                {booted && scan.outcomes.map((o, i) => (
                   <Exchange
                     key={`${scanId}-${o.reply}`}
                     dir="back"
@@ -243,6 +261,14 @@ function Exchange({ dir, label, index, verdict }: { dir: "out" | "back"; label: 
             className={`absolute top-1/2 h-[7px] w-[7px] -translate-y-1/2 rotate-45 ${
               out ? "-right-px border-t border-r border-accent" : "-left-px border-b border-l border-line-strong"
             }`}
+          />
+          {/* the packet itself, crossing the wire once the arrow is drawn */}
+          <motion.span
+            aria-hidden="true"
+            className={`absolute top-1/2 h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full ${out ? "bg-accent shadow-[0_0_0_4px_rgba(198,244,50,0.15)]" : "bg-fg/70"}`}
+            initial={{ left: out ? "0%" : "100%", opacity: 0 }}
+            animate={{ left: out ? "100%" : "0%", opacity: [0, 1, 1, 0] }}
+            transition={{ duration: 0.9, ease: [0.65, 0, 0.35, 1], delay: 0.45 + index * 0.35, times: [0, 0.1, 0.85, 1] }}
           />
         </span>
       </span>
