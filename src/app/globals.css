@@ -205,7 +205,31 @@ body {
   }
 }
 
+/* A pulse travelling along the LLMSec canary thread. */
+.thread-pulse {
+  animation: thread-pulse 5s var(--ease-out-expo) infinite;
+}
+@keyframes thread-pulse {
+  0% {
+    left: -6rem;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .thread-pulse {
+    display: none;
+  }
   .marquee {
     animation: none !important;
   }

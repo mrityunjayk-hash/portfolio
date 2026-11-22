@@ -1,27 +1,8 @@
 import type { LogoId } from "./logos";
 
 /**
- * Certifications and field work.
- * Add `date` and `verifyUrl` to a certification when available.
+ * Field work.
  */
-
-export type Certification = {
-  name: string;
-  short: string;
-  issuer: string;
-  date?: string;
-  verifyUrl?: string;
-  scope: string[];
-};
-
-export const certifications: Certification[] = [
-  {
-    name: "Junior Penetration Tester",
-    short: "eJPT",
-    issuer: "INE Security",
-    scope: ["Assessment methodology", "Host & network auditing", "Host & network penetration testing", "Web application penetration testing"],
-  },
-];
 
 export type FieldWorkItem = {
   title: string;
