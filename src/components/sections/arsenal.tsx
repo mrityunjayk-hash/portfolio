@@ -12,7 +12,6 @@ export function Arsenal() {
     <section id="arsenal" aria-labelledby="arsenal-title" className="relative overflow-hidden border-t border-line py-24 sm:py-32">
       <div className="container-x">
         <SectionHeading
-          index="04"
           label="Arsenal"
           id="arsenal-title"
           title={

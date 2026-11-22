@@ -10,7 +10,6 @@ export async function Research() {
     <section id="research" aria-labelledby="research-title" className="relative border-t border-line py-24 sm:py-32">
       <div className="container-x">
         <SectionHeading
-          index="03"
           label="Research"
           id="research-title"
           title={

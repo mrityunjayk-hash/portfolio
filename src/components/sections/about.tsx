@@ -4,11 +4,9 @@ export function About() {
   return (
     <section id="about" aria-labelledby="about-title" className="relative py-24 sm:py-32">
       <div className="container-x">
-        <p className="label-mono flex items-center gap-3" data-reveal>
-          <span className="text-accent">01</span>
-          <span className="h-px w-8 bg-line-strong" aria-hidden="true" />
-          About
-        </p>
+        <p className="font-display text-2xl font-medium text-fg" data-reveal>
+            About
+          </p>
         <h2
           id="about-title"
           className="display mt-8 text-[clamp(2.6rem,7vw,5.5rem)] font-bold text-balance"
@@ -32,7 +30,7 @@ export function About() {
         <div className="mt-24 md:mt-32">
           <div className="mb-8 flex items-baseline justify-between gap-6" data-reveal>
             <h3 className="label-mono">
-              <span className="text-accent">Method</span> — how I approach a target
+              <span className="text-accent">Method</span>
             </h3>
             <p className="label-mono hidden text-subtle md:block">04 stages</p>
           </div>

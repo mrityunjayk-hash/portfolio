@@ -9,7 +9,6 @@ export function Projects() {
     <section id="projects" aria-labelledby="projects-title" className="relative py-24 sm:py-32">
       <div className="container-x">
         <SectionHeading
-          index="02"
           label="Projects"
           id="projects-title"
           title={

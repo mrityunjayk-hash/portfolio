@@ -1,6 +1,5 @@
-import { site, socials } from "@/content/site";
+import { site } from "@/content/site";
 import { CtaLink, TextLink } from "@/components/ui/button-link";
-import { SocialIcon } from "@/components/ui/icons";
 import { Parallax } from "@/components/ui/parallax";
 import { SurfaceMap } from "./surface-map";
 
@@ -75,31 +74,6 @@ export function Hero() {
               Get in touch
             </TextLink>
           </div>
-        </div>
-      </div>
-
-      <div className="container-x fade-in pb-8" style={{ "--d": "1000ms" } as React.CSSProperties}>
-        <div className="flex flex-col gap-4 border-t border-line pt-5 sm:flex-row sm:items-center sm:justify-between">
-          <p className="label-mono">
-            <span className="text-subtle">Currently exploring —</span>{" "}
-            <span className="text-fg normal-case tracking-normal">{site.currentFocus}</span>
-          </p>
-          <ul className="-ml-2.5 flex items-center gap-1 sm:ml-0">
-            {socials.map((s) => (
-              <li key={s.label}>
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${s.label} (opens in a new tab)`}
-                  className="inline-flex h-10 w-10 items-center justify-center text-muted transition-colors duration-300 hover:text-fg"
-                >
-                  <SocialIcon icon={s.icon} className="h-[17px] w-[17px]" />
-                </a>
-              </li>
-            ))}
-            <li className="label-mono ml-3 hidden text-subtle md:block">Move your cursor to probe the surface ↗</li>
-          </ul>
         </div>
       </div>
     </section>

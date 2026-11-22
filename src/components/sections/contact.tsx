@@ -9,9 +9,7 @@ export function Contact() {
       <div aria-hidden="true" className="absolute -bottom-60 left-1/2 h-[520px] w-[900px] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(198,244,50,0.06),transparent_65%)]" />
       <div className="container-x relative grid gap-16 lg:grid-cols-12">
         <div className="lg:col-span-6">
-          <p className="label-mono flex items-center gap-3" data-reveal>
-            <span className="text-accent">07</span>
-            <span className="h-px w-8 bg-line-strong" aria-hidden="true" />
+          <p className="font-display text-2xl font-medium text-fg" data-reveal>
             Contact
           </p>
           <h2 id="contact-title" className="display mt-6 text-5xl text-balance sm:text-6xl lg:text-7xl" data-reveal>

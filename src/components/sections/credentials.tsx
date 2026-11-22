@@ -8,9 +8,7 @@ export function Credentials() {
       <div className="container-x grid gap-16 lg:grid-cols-12 lg:gap-14">
         {/* Field work */}
         <div className="lg:col-span-7">
-          <p className="label-mono flex items-center gap-3" data-reveal>
-            <span className="text-accent">05</span>
-            <span className="h-px w-8 bg-line-strong" aria-hidden="true" />
+          <p className="font-display text-2xl font-medium text-fg" data-reveal>
             Field work
           </p>
           <h2 id="credentials-title" className="display mt-6 text-4xl sm:text-5xl" data-reveal>
@@ -52,9 +50,7 @@ export function Credentials() {
 
         {/* Certification */}
         <div className="lg:col-span-5">
-          <p className="label-mono flex items-center gap-3" data-reveal>
-            <span className="text-accent">06</span>
-            <span className="h-px w-8 bg-line-strong" aria-hidden="true" />
+          <p className="font-display text-2xl font-medium text-fg" data-reveal>
             Certification
           </p>
           <div className="mt-6 space-y-4 lg:sticky lg:top-28">
