@@ -17,7 +17,7 @@ export function ResearchIndex({ posts }: { posts: Post[] }) {
 
   return (
     <div data-reveal>
-      <div className="mb-4 flex flex-wrap gap-1.5" role="group" aria-label="Filter by category">
+      <div className="mb-6 flex flex-wrap gap-x-6 gap-y-1" role="group" aria-label="Filter by category">
         <Chip active={filter === "all"} onClick={() => setFilter("all")} count={posts.length}>
           All
         </Chip>
@@ -96,12 +96,18 @@ function Chip({
       onClick={onClick}
       disabled={disabled}
       aria-pressed={active}
-      className={`inline-flex h-8 items-center gap-2 rounded-[3px] border px-3 font-mono text-[11px] tracking-[0.04em] uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-35 ${
-        active ? "border-accent bg-accent-dim text-accent" : "border-line text-muted enabled:hover:border-line-strong enabled:hover:text-fg"
+      className={`group relative inline-flex items-baseline gap-1 py-1.5 text-[14px] transition-colors disabled:cursor-not-allowed disabled:text-subtle/60 ${
+        active ? "text-fg" : "text-muted enabled:hover:text-fg"
       }`}
     >
       {children}
-      <span className="text-subtle">{count}</span>
+      <sup className={`font-mono text-[10px] ${active ? "text-accent" : "text-subtle"}`}>{count}</sup>
+      <span
+        aria-hidden="true"
+        className={`absolute inset-x-0 bottom-0 h-px origin-left bg-accent transition-transform duration-500 ease-[var(--ease-out-expo)] ${
+          active ? "scale-x-100" : "scale-x-0"
+        }`}
+      />
     </button>
   );
 }
@@ -112,7 +118,7 @@ function EmptyState() {
       <div aria-hidden="true" className="hairline-grid absolute inset-0 opacity-50 [mask-image:linear-gradient(to_bottom,black,transparent)]" />
       <div className="relative grid gap-6 md:grid-cols-12">
         <div className="md:col-span-2">
-          <span className="inline-flex h-10 w-10 items-center justify-center rounded-[4px] border border-line-strong text-accent">
+          <span className="inline-flex text-accent">
             <PenLine size={16} aria-hidden="true" />
           </span>
         </div>

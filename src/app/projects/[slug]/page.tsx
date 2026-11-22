@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { getProject, projects } from "@/content/projects";
-import { GithubIcon } from "@/components/ui/icons";
+import { CtaLink, TextLink } from "@/components/ui/button-link";
+import { StackLine } from "@/components/projects/stack-line";
 import { ProjectVisual } from "@/components/projects/project-visual";
 
 export const dynamicParams = false;
@@ -52,19 +53,13 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             </p>
           </div>
           <div className="fade-in flex flex-col justify-end gap-3 lg:col-span-4 lg:items-end" style={{ "--d": "300ms" } as React.CSSProperties}>
-            <a
-              href={p.repo}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-12 items-center gap-2 rounded-[4px] bg-fg px-5 text-sm font-medium text-bg transition-colors hover:bg-accent"
-            >
-              <GithubIcon className="h-4 w-4" /> View source on GitHub
-              <span className="sr-only">(opens in a new tab)</span>
-            </a>
+            <CtaLink href={p.repo} external arrow="up-right">
+              View source on GitHub
+            </CtaLink>
             {p.demo && (
-              <a href={p.demo} target="_blank" rel="noopener noreferrer" className="text-sm text-muted hover:text-fg">
-                Live demo ↗
-              </a>
+              <TextLink href={p.demo} external arrow="up-right">
+                Live demo
+              </TextLink>
             )}
           </div>
         </header>
@@ -74,12 +69,8 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
             <dl className="space-y-8 lg:sticky lg:top-28">
               <div>
                 <dt className="label-mono mb-3">Stack</dt>
-                <dd className="flex flex-wrap gap-1.5">
-                  {p.stack.map((s) => (
-                    <span key={s} className="rounded-[3px] border border-line px-2 py-1 font-mono text-[11px] text-muted">
-                      {s}
-                    </span>
-                  ))}
+                <dd>
+                  <StackLine stack={p.stack} />
                 </dd>
               </div>
               <div>
@@ -149,10 +140,11 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
                   Roadmap
                 </h2>
                 <p className="mb-5 text-[14px] text-subtle">Planned in the repository — not implemented yet.</p>
-                <ul className="flex flex-wrap gap-2">
+                <ul className="divide-y divide-dashed divide-line border-y border-dashed border-line">
                   {p.roadmap.map((r) => (
-                    <li key={r} className="rounded-[3px] border border-dashed border-line-strong px-3 py-1.5 text-[14px] text-muted">
+                    <li key={r} className="flex items-center justify-between gap-4 py-3 text-[15px] text-muted">
                       {r}
+                      <span className="font-mono text-[10px] tracking-[0.08em] text-subtle uppercase">planned</span>
                     </li>
                   ))}
                 </ul>

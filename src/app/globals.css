@@ -170,7 +170,20 @@ body {
   animation: pulse-dot 2.4s ease-in-out infinite;
 }
 
+/* Slow logo marquee: two identical lists, shifted by exactly one list width. */
+.marquee {
+  animation: marquee 70s linear infinite;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .marquee {
+    animation: none !important;
+  }
   html {
     scroll-behavior: auto;
   }

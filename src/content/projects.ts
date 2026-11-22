@@ -1,3 +1,5 @@
+import type { LogoId } from "./logos";
+
 /**
  * Projects. Every claim here is taken from the project's public repository.
  * `visual` selects the interactive illustration rendered for the project.
@@ -12,7 +14,7 @@ export type Project = {
   problem: string;
   implementation: string[];
   features: string[];
-  stack: string[];
+  stack: { label: string; logo?: LogoId }[];
   roadmap?: string[];
   usage: { label: string; command: string }[];
   repo: string;
@@ -48,7 +50,13 @@ export const projects: Project[] = [
       "Explicit --authorized flag required to run",
       "Bundled intentionally vulnerable demo app",
     ],
-    stack: ["Python 3.9+", "Standard library only", "Prompt injection", "RAG security", "AI application security"],
+    stack: [
+      { label: "Python 3.9+", logo: "python" },
+      { label: "Standard library only" },
+      { label: "Prompt injection" },
+      { label: "RAG security" },
+      { label: "AI application security" },
+    ],
     roadmap: ["Multi-turn attacks", "RAG poisoning (upload a document, query it later)", "SARIF output", "LLM judge instead of regex checks"],
     usage: [
       { label: "Local demo", command: "python -m llmsec --url http://127.0.0.1:8000 --authorized --known sk-acme" },
@@ -86,7 +94,13 @@ export const projects: Project[] = [
       "Output as JSON, XML or grepable text",
       "Single file, no pip installs",
     ],
-    stack: ["Python", "Raw sockets", "TCP/IP", "ICMP", "Multi-threading"],
+    stack: [
+      { label: "Python", logo: "python" },
+      { label: "Raw sockets" },
+      { label: "TCP/IP" },
+      { label: "ICMP" },
+      { label: "Multi-threading" },
+    ],
     usage: [
       { label: "SYN scan, ports 1–1000", command: "sudo python3 portforge.py 192.168.1.1 -sS -p 1-1000" },
       { label: "Service checks + JSON", command: "python3 portforge.py 192.168.1.1 --script -o results.json" },

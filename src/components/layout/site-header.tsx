@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Menu, X } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { nav, site, socials } from "@/content/site";
 import { SocialIcon } from "@/components/ui/icons";
 
@@ -105,35 +105,37 @@ export function SiteHeader() {
         }`}
       >
         <div className="container-x flex h-[var(--header-h)] items-center justify-between gap-6">
-          <Link href="/#home" className="group flex items-center gap-3" aria-label={`${site.name} — home`}>
-            <Mark />
-            <span className="hidden font-mono text-[12px] tracking-[0.08em] text-fg uppercase sm:inline">
-              {site.firstName} <span className="text-muted">{site.lastName}</span>
-            </span>
+          <Link
+            href="/#home"
+            className="group relative font-mono text-[12px] tracking-[0.22em] whitespace-nowrap text-fg uppercase"
+            aria-label={`${site.name} — home`}
+          >
+            {site.firstName}
+            <span className="text-muted transition-colors duration-300 group-hover:text-fg"> {site.lastName}</span>
           </Link>
 
           <nav aria-label="Primary" className="hidden lg:block">
-            <ul className="flex items-center gap-1">
-              {nav.slice(1).map((item, i) => {
+            <ul className="flex items-center gap-7">
+              {nav.slice(1).map((item) => {
                 const isActive = current === item.id;
                 return (
-                  <li key={item.id} className="relative">
+                  <li key={item.id}>
                     <Link
                       href={href(item.id)}
                       aria-current={isActive ? "location" : undefined}
-                      className={`relative flex items-center gap-1.5 px-3 py-2 text-[13px] transition-colors duration-300 ${
+                      className={`group relative flex items-center py-2 text-[13px] tracking-[0.01em] transition-colors duration-300 ${
                         isActive ? "text-fg" : "text-muted hover:text-fg"
                       }`}
                     >
-                      <span className="font-mono text-[10px] text-subtle">0{i + 1}</span>
-                      {item.label}
                       {isActive && (
                         <motion.span
                           layoutId="nav-indicator"
-                          className="absolute inset-x-3 -bottom-px h-px bg-accent"
-                          transition={{ type: "spring", stiffness: 420, damping: 36 }}
+                          aria-hidden="true"
+                          className="absolute top-1/2 -left-3 h-1 w-1 -translate-y-1/2 rounded-full bg-accent"
+                          transition={{ type: "spring", stiffness: 380, damping: 34 }}
                         />
                       )}
+                      {item.label}
                     </Link>
                   </li>
                 );
@@ -141,12 +143,23 @@ export function SiteHeader() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-5">
             <Link
               href="/#contact"
-              className="hidden h-9 items-center rounded-[4px] border border-line-strong px-4 text-[13px] text-fg transition-colors hover:border-accent hover:text-accent sm:inline-flex"
+              className="group hidden items-center gap-1.5 text-[13px] text-fg sm:inline-flex"
             >
-              Get in touch
+              <span className="relative py-1">
+                Get in touch
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 bottom-0 h-px origin-right scale-x-0 bg-accent transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:origin-left group-hover:scale-x-100"
+                />
+              </span>
+              <ArrowUpRight
+                size={14}
+                aria-hidden="true"
+                className="text-accent transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+              />
             </Link>
             <button
               ref={toggleRef}
@@ -155,9 +168,20 @@ export function SiteHeader() {
               aria-expanded={open}
               aria-controls="mobile-menu"
               aria-label={open ? "Close menu" : "Open menu"}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-[4px] border border-line-strong text-fg lg:hidden"
+              className="relative -mr-2 inline-flex h-10 w-10 items-center justify-center text-fg lg:hidden"
             >
-              {open ? <X size={18} /> : <Menu size={18} />}
+              <span aria-hidden="true" className="relative block h-3 w-5">
+                <span
+                  className={`absolute left-0 h-px w-5 bg-current transition-transform duration-300 ${
+                    open ? "top-1.5 rotate-45" : "top-0"
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 h-px bg-current transition-all duration-300 ${
+                    open ? "top-1.5 w-5 -rotate-45" : "top-3 w-3"
+                  }`}
+                />
+              </span>
             </button>
           </div>
         </div>
@@ -209,7 +233,7 @@ export function SiteHeader() {
                   </motion.li>
                 ))}
               </ul>
-              <div className="mt-10 flex gap-3">
+              <div className="-ml-3 mt-10 flex gap-1">
                 {socials.map((s) => (
                   <a
                     key={s.label}
@@ -217,7 +241,7 @@ export function SiteHeader() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={s.label}
-                    className="inline-flex h-11 w-11 items-center justify-center rounded-[4px] border border-line-strong text-muted hover:text-fg"
+                    className="inline-flex h-11 w-11 items-center justify-center text-muted transition-colors hover:text-fg"
                   >
                     <SocialIcon icon={s.icon} className="h-4 w-4" />
                   </a>
@@ -228,17 +252,5 @@ export function SiteHeader() {
         )}
       </AnimatePresence>
     </>
-  );
-}
-
-function Mark() {
-  return (
-    <span
-      aria-hidden="true"
-      className="relative flex h-8 w-8 items-center justify-center rounded-[4px] border border-line-strong font-mono text-[11px] font-medium text-fg transition-colors group-hover:border-accent"
-    >
-      MK
-      <span className="absolute -top-px -right-px h-1.5 w-1.5 bg-accent" />
-    </span>
   );
 }

@@ -4,12 +4,16 @@ import { FlagExplorer } from "./flag-explorer";
 
 export function ProjectVisual({ visual }: { visual: Project["visual"] }) {
   return (
-    <div className="panel relative h-full overflow-hidden shadow-[0_40px_80px_-40px_rgba(0,0,0,0.8)]">
+    <figure className="relative overflow-hidden rounded-[3px] border border-line bg-[linear-gradient(180deg,var(--surface),rgba(17,19,23,0.4))] shadow-[0_50px_100px_-50px_rgba(0,0,0,0.9)]">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-24 h-48 bg-[radial-gradient(ellipse_at_center,rgba(198,244,50,0.06),transparent_70%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent"
       />
       {visual === "flags" ? <FlagExplorer /> : <CanaryFlow />}
-    </div>
+      <figcaption className="sr-only">
+        Interactive illustration of how {visual === "flags" ? "PortForge's scan techniques" : "LLMSec's split-canary check"} work. Not a
+        screenshot.
+      </figcaption>
+    </figure>
   );
 }

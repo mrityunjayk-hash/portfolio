@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { CtaLink } from "@/components/ui/button-link";
 
 export default function NotFound() {
   return (
@@ -12,12 +12,9 @@ export default function NotFound() {
           Nothing listening <span className="text-muted">on this path.</span>
         </h1>
         <p className="mt-6 max-w-md text-muted">The page you requested doesn&apos;t exist or has moved.</p>
-        <Link
-          href="/"
-          className="mt-10 inline-flex h-12 items-center rounded-[4px] bg-fg px-5 text-sm font-medium text-bg transition-colors hover:bg-accent"
-        >
+        <CtaLink href="/" className="mt-10">
           Back to home
-        </Link>
+        </CtaLink>
       </div>
     </section>
   );

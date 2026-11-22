@@ -28,20 +28,24 @@ export async function Research() {
             <h3 className="label-mono">Areas of focus</h3>
             <p className="label-mono hidden text-subtle sm:block">Vulnerability classes I spend the most time on</p>
           </div>
-          <ul className="grid gap-px overflow-hidden rounded-[6px] border border-line bg-line sm:grid-cols-2 lg:grid-cols-5">
+          <ol className="border-t border-line">
             {researchFocus.map((f, i) => (
               <li
                 key={f.code}
                 data-reveal
-                style={{ "--reveal-delay": `${i * 70}ms` } as React.CSSProperties}
-                className="group flex flex-col bg-bg p-6 transition-colors duration-500 hover:bg-surface"
+                style={{ "--reveal-delay": `${i * 60}ms` } as React.CSSProperties}
+                className="group grid gap-2 border-b border-line py-6 transition-colors duration-500 md:grid-cols-12 md:items-baseline md:gap-6"
               >
-                <span className="font-mono text-[11px] text-subtle transition-colors group-hover:text-accent">{f.code}</span>
-                <h4 className="mt-8 text-lg leading-snug tracking-tight text-fg">{f.title}</h4>
-                <p className="mt-3 text-[14px] leading-relaxed text-muted">{f.body}</p>
+                <span className="font-mono text-[12px] text-subtle transition-colors group-hover:text-accent md:col-span-1">
+                  {f.code}
+                </span>
+                <h4 className="text-xl tracking-tight text-fg transition-transform duration-500 ease-[var(--ease-out-expo)] md:col-span-4 md:group-hover:translate-x-1">
+                  {f.title}
+                </h4>
+                <p className="text-[15px] leading-relaxed text-muted md:col-span-7">{f.body}</p>
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
       </div>
     </section>

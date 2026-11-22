@@ -62,9 +62,10 @@ export default async function ArticlePage({ params }: PageProps<"/research/[slug
             {meta.summary}
           </p>
           {meta.tags.length > 0 && (
-            <ul className="mt-6 flex flex-wrap gap-1.5" aria-label="Technologies">
-              {meta.tags.map((t) => (
-                <li key={t} className="rounded-[3px] border border-line px-2 py-1 font-mono text-[11px] text-muted">
+            <ul className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] tracking-[0.04em] text-muted uppercase" aria-label="Technologies">
+              {meta.tags.map((t, i) => (
+                <li key={t} className="flex items-center gap-3">
+                  {i > 0 && <span aria-hidden="true" className="h-[3px] w-[3px] rounded-full bg-line-strong" />}
                   {t}
                 </li>
               ))}

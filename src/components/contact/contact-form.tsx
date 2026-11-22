@@ -83,9 +83,9 @@ export function ContactForm() {
   }
 
   return (
-    <div className="panel relative overflow-hidden">
-      <div className="flex items-center justify-between border-b border-line px-6 py-3">
-        <p className="label-mono">Send a message</p>
+    <div className="relative">
+      <div className="flex items-center justify-between pb-2">
+        <p className="label-mono text-fg">Send a message</p>
         <p className="label-mono hidden text-subtle sm:block">Goes straight to my inbox</p>
       </div>
 
@@ -96,7 +96,7 @@ export function ContactForm() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="flex min-h-[420px] flex-col items-start justify-center gap-4 p-6 sm:p-8"
+            className="flex min-h-[420px] flex-col items-start justify-center gap-4 border-t border-line py-8"
             role="status"
           >
             <span className="flex h-11 w-11 items-center justify-center rounded-full bg-accent-dim text-accent">
@@ -124,10 +124,10 @@ export function ContactForm() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="flex flex-col gap-5 p-6 sm:p-8"
+            className="flex flex-col gap-4 pt-4"
             aria-describedby={formError ? "form-error" : undefined}
           >
-            <div className="grid gap-5 sm:grid-cols-2">
+            <div className="grid gap-x-8 gap-y-4 sm:grid-cols-2">
               {fields.map((f) => (
                 <Field key={f.name} id={`cf-${f.name}`} label={f.label} error={errors[f.name]}>
                   <input
@@ -156,7 +156,7 @@ export function ContactForm() {
                 aria-invalid={!!errors.message}
                 aria-describedby={errors.message ? "cf-message-error" : undefined}
                 onBlur={(e) => e.target.value && validateField("message", e.target.value)}
-                className={`${inputCls(!!errors.message)} resize-y py-3`}
+                className={`${inputCls(!!errors.message)} resize-y py-3 leading-relaxed`}
               />
             </Field>
 
@@ -185,7 +185,7 @@ export function ContactForm() {
             <button
               type="submit"
               disabled={status === "submitting"}
-              className="group inline-flex h-12 items-center justify-center gap-2 rounded-[4px] bg-fg px-5 text-sm font-medium text-bg transition-colors hover:bg-accent disabled:cursor-wait disabled:opacity-70"
+              className="group mt-2 inline-flex h-12 items-center justify-center gap-3 self-start rounded-[2px] bg-accent pr-5 pl-6 text-[14px] font-medium text-[#0a0b0d] transition-shadow duration-300 hover:shadow-[0_0_0_4px_rgba(198,244,50,0.12)] disabled:cursor-wait disabled:opacity-70"
             >
               {status === "submitting" ? (
                 <>
@@ -208,8 +208,8 @@ export function ContactForm() {
 }
 
 const inputCls = (invalid: boolean) =>
-  `w-full rounded-[4px] border bg-bg/60 px-3.5 text-[15px] text-fg placeholder:text-subtle transition-colors outline-none focus:border-accent focus-visible:outline-none min-h-12 ${
-    invalid ? "border-danger/60" : "border-line-strong hover:border-white/25"
+  `w-full min-h-11 border-0 border-b bg-transparent px-0 text-[16px] text-fg placeholder:text-subtle transition-colors outline-none focus:border-accent focus-visible:outline-none ${
+    invalid ? "border-danger/70" : "border-line-strong hover:border-white/30"
   }`;
 
 function Field({ id, label, error, children }: { id: string; label: string; error?: string; children: React.ReactNode }) {

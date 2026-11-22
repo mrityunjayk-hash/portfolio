@@ -1,5 +1,6 @@
 import { ArrowUpRight, BadgeCheck } from "lucide-react";
 import { certifications, fieldWork } from "@/content/credentials";
+import { TechMark } from "@/components/ui/tech-mark";
 
 export function Credentials() {
   return (
@@ -25,14 +26,20 @@ export function Credentials() {
               >
                 <span className="font-mono text-[11px] text-subtle">0{i + 1}</span>
                 <div>
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                  <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
                     <h3 className="text-xl tracking-tight text-fg">{f.title}</h3>
-                    <p className="label-mono">{f.context}</p>
+                    <p className="group flex items-center gap-2.5 text-muted">
+                      {f.logos?.map((l) => (
+                        <TechMark key={l} logo={l} size={15} />
+                      ))}
+                      <span className="label-mono">{f.context}</span>
+                    </p>
                   </div>
                   <p className="mt-2 text-[15px] leading-relaxed text-muted">{f.body}</p>
-                  <ul className="mt-4 flex flex-wrap gap-1.5">
-                    {f.tags.map((t) => (
-                      <li key={t} className="rounded-[3px] border border-line px-2 py-0.5 font-mono text-[11px] text-muted">
+                  <ul className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] tracking-[0.04em] text-subtle uppercase">
+                    {f.tags.map((t, n) => (
+                      <li key={t} className="flex items-center gap-3">
+                        {n > 0 && <span aria-hidden="true" className="h-[3px] w-[3px] rounded-full bg-line-strong" />}
                         {t}
                       </li>
                     ))}

@@ -112,112 +112,172 @@ const toneCls = {
   unknown: "text-muted",
 };
 
+const fmtBits = (n: number) => n.toString(2).padStart(8, "0").replace(/(\d{4})(\d{4})/, "$1 $2");
+
 export function FlagExplorer() {
   const [scanId, setScanId] = useState("xmas");
   const scan = SCANS.find((s) => s.id === scanId)!;
+  const isUdp = scan.proto === "UDP";
   const byte = FLAGS.reduce((acc, f, i) => (scan.flags.includes(f) ? acc | (1 << (7 - i)) : acc), 0);
+  const probeLabel = isUdp ? "UDP datagram" : scan.flags.length ? scan.flags.join(" · ") : "no flags set";
   const tabsId = useId();
 
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    e.preventDefault();
+    const i = SCANS.findIndex((s) => s.id === scanId);
+    const next = SCANS[(i + (e.key === "ArrowRight" ? 1 : -1) + SCANS.length) % SCANS.length];
+    setScanId(next.id);
+    document.getElementById(`${tabsId}-${next.id}`)?.focus();
+  };
+
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex items-center justify-between border-b border-line px-5 py-3">
-        <p className="label-mono">TCP flag explorer</p>
-        <p className="label-mono text-subtle">Illustrative visual</p>
+    <div className="p-5 sm:p-7">
+      {/* scan selector */}
+      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+        <div role="tablist" aria-label="Scan technique" className="-ml-1 flex flex-wrap gap-x-1" onKeyDown={onKeyDown}>
+          {SCANS.map((s) => {
+            const active = s.id === scanId;
+            return (
+              <button
+                key={s.id}
+                role="tab"
+                id={`${tabsId}-${s.id}`}
+                aria-selected={active}
+                aria-controls={`${tabsId}-panel`}
+                tabIndex={active ? 0 : -1}
+                onClick={() => setScanId(s.id)}
+                className={`relative px-2 py-2 font-mono text-[13px] tracking-[0.04em] transition-colors duration-300 ${
+                  active ? "text-fg" : "text-subtle hover:text-muted"
+                }`}
+              >
+                {s.label}
+                {active && (
+                  <motion.span
+                    layoutId={`${tabsId}-underline`}
+                    className="absolute inset-x-2 bottom-0 h-px bg-accent"
+                    transition={{ type: "spring", stiffness: 420, damping: 38 }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
+        <p className="label-mono text-subtle">Illustrative · RFC 793 behaviour</p>
       </div>
 
-      <div role="tablist" aria-label="Scan technique" className="flex flex-wrap gap-1.5 px-5 pt-5">
-        {SCANS.map((s) => (
-          <button
-            key={s.id}
-            role="tab"
-            id={`${tabsId}-${s.id}`}
-            aria-selected={s.id === scanId}
-            aria-controls={`${tabsId}-panel`}
-            onClick={() => setScanId(s.id)}
-            className={`h-8 rounded-[3px] border px-3 font-mono text-[12px] transition-colors ${
-              s.id === scanId
-                ? "border-accent bg-accent-dim text-accent"
-                : "border-line text-muted hover:border-line-strong hover:text-fg"
-            }`}
-          >
-            {s.label}
-          </button>
-        ))}
-      </div>
+      <div id={`${tabsId}-panel`} role="tabpanel" aria-labelledby={`${tabsId}-${scanId}`} className="mt-8">
+        {/* flag register */}
+        <div className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
+          <p className="label-mono">{isUdp ? "No TCP header — UDP carries no flags" : "TCP flags · header offset 13"}</p>
+          <p className="font-mono text-[12px] whitespace-nowrap text-subtle" aria-live="polite">
+            {isUdp ? "—" : (
+              <>
+                <span className="text-muted">{fmtBits(byte)}</span>
+                <span className="ml-3 text-fg">0x{byte.toString(16).padStart(2, "0")}</span>
+              </>
+            )}
+          </p>
+        </div>
 
-      <div id={`${tabsId}-panel`} role="tabpanel" aria-labelledby={`${tabsId}-${scanId}`} className="flex flex-1 flex-col gap-6 p-5">
-        {/* flag byte */}
-        <div>
-          <div className="mb-2 flex items-baseline justify-between">
-            <p className="label-mono">{scan.proto === "TCP" ? "TCP flags byte" : "UDP has no flags"}</p>
-            <p className="font-mono text-[12px] text-muted">
-              {scan.proto === "TCP" ? `0x${byte.toString(16).padStart(2, "0")}` : "—"}
-            </p>
-          </div>
-          <div className="grid grid-cols-8 gap-1">
-            {FLAGS.map((f) => {
-              const on = scan.flags.includes(f);
-              return (
+        <ol
+          aria-label="TCP flag bits"
+          className={`mt-3 grid grid-cols-8 transition-opacity duration-500 ${isUdp ? "opacity-25" : ""}`}
+        >
+          {FLAGS.map((f, i) => {
+            const on = !isUdp && scan.flags.includes(f);
+            return (
+              <li key={f} className="relative" aria-label={`${f} ${on ? "set" : "not set"}`}>
+                <span className="block pb-2 text-center font-mono text-[9px] text-subtle" aria-hidden="true">
+                  {7 - i}
+                </span>
                 <div
-                  key={f}
-                  className={`flex flex-col items-center gap-1 rounded-[3px] border py-2 transition-colors duration-300 ${
-                    scan.proto === "UDP"
-                      ? "border-line/50 opacity-30"
-                      : on
-                        ? "border-accent/60 bg-accent-dim"
-                        : "border-line"
+                  className={`relative flex h-14 items-center justify-center border-y border-line sm:h-16 ${
+                    i === 0 ? "border-l" : ""
+                  } border-r ${i === 7 ? "" : "border-r-line/60"}`}
+                >
+                  <motion.span
+                    aria-hidden="true"
+                    className="absolute inset-0 bg-accent"
+                    initial={false}
+                    animate={{ scaleY: on ? 1 : 0, opacity: on ? 1 : 0 }}
+                    style={{ originY: 1 }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1], delay: on ? i * 0.03 : 0 }}
+                  />
+                  <span
+                    aria-hidden="true"
+                    className={`relative font-mono text-lg transition-colors duration-300 sm:text-xl ${on ? "text-[#0a0b0d]" : "text-subtle"}`}
+                  >
+                    {on ? 1 : 0}
+                  </span>
+                </div>
+                <span
+                  aria-hidden="true"
+                  className={`block pt-2 text-center font-mono text-[10px] tracking-[0.04em] transition-colors duration-300 sm:text-[11px] ${
+                    on ? "text-fg" : "text-subtle"
                   }`}
                 >
-                  <span className={`font-mono text-[13px] ${on ? "text-accent" : "text-subtle"}`}>{on ? 1 : 0}</span>
-                  <span className={`font-mono text-[9px] sm:text-[10px] ${on ? "text-fg" : "text-subtle"}`}>{f}</span>
-                </div>
-              );
-            })}
+                  {f}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+
+        {/* exchange */}
+        <div className="mt-8 grid gap-6 sm:grid-cols-[1fr_1.2fr] sm:gap-8">
+          <div>
+            <p className="label-mono mb-3">Probe</p>
+            <div className="flex items-center gap-3 font-mono text-[12px]">
+              <span className="text-muted">portforge</span>
+              <span className="relative h-px flex-1 bg-line-strong">
+                <motion.span
+                  key={scanId}
+                  aria-hidden="true"
+                  className="absolute top-1/2 h-1.5 w-1.5 -translate-y-1/2 rounded-full bg-accent"
+                  initial={{ left: "0%", opacity: 0 }}
+                  animate={{ left: "100%", opacity: [0, 1, 1, 0] }}
+                  transition={{ duration: 1.1, ease: [0.65, 0, 0.35, 1] }}
+                />
+                <span aria-hidden="true" className="absolute top-1/2 -right-px h-[7px] w-[7px] -translate-y-1/2 rotate-45 border-t border-r border-line-strong" />
+              </span>
+              <span className="text-muted">target</span>
+            </div>
+            <p className="mt-3 font-mono text-[13px] text-fg">{probeLabel}</p>
+            <p className="mt-4 text-[14px] leading-relaxed text-muted">{scan.note}</p>
+          </div>
+
+          <div>
+            <p className="label-mono mb-1">Reply → port verdict</p>
+            <dl>
+              <AnimatePresence mode="popLayout" initial={false}>
+                {scan.outcomes.map((o, i) => (
+                  <motion.div
+                    key={`${scanId}-${o.reply}`}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.35, delay: i * 0.05 }}
+                    className="flex items-baseline justify-between gap-4 border-b border-line py-2.5 font-mono text-[13px] last:border-0"
+                  >
+                    <dt className="text-fg">
+                      <span className="mr-2 text-subtle" aria-hidden="true">←</span>
+                      {o.reply}
+                    </dt>
+                    <dd className={toneCls[o.tone]}>{o.verdict}</dd>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </dl>
           </div>
         </div>
 
-        {/* packet path */}
-        <div className="relative flex items-center justify-between gap-3 font-mono text-[11px] text-muted">
-          <span className="rounded-[3px] border border-line px-2 py-1">portforge</span>
-          <div className="relative h-px flex-1 bg-line-strong">
-            <AnimatePresence mode="popLayout">
-              <motion.span
-                key={scanId}
-                className="absolute -top-[3px] h-[7px] w-[7px] rounded-full bg-accent"
-                initial={{ left: "0%", opacity: 0 }}
-                animate={{ left: ["0%", "100%", "0%"], opacity: [1, 1, 0.4] }}
-                transition={{ duration: 1.8, ease: "easeInOut", times: [0, 0.5, 1] }}
-              />
-            </AnimatePresence>
-          </div>
-          <span className="rounded-[3px] border border-line px-2 py-1">target:port</span>
-        </div>
-
-        {/* outcomes */}
-        <div className="overflow-hidden rounded-[4px] border border-line">
-          <table className="w-full text-left font-mono text-[12px]">
-            <thead>
-              <tr className="border-b border-line text-subtle">
-                <th scope="col" className="px-3 py-2 font-normal">Reply</th>
-                <th scope="col" className="px-3 py-2 font-normal">Port verdict</th>
-              </tr>
-            </thead>
-            <tbody>
-              {scan.outcomes.map((o) => (
-                <tr key={o.reply} className="border-b border-line last:border-0">
-                  <td className="px-3 py-2 text-fg">{o.reply}</td>
-                  <td className={`px-3 py-2 ${toneCls[o.tone]}`}>{o.verdict}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="mt-auto flex flex-col gap-2 border-t border-line pt-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-[13px] text-muted">{scan.note}</p>
-          <code className="shrink-0 font-mono text-[12px] text-fg">
-            <span className="text-subtle">$ sudo portforge.py</span> {scan.cli}
+        <div className="mt-6 flex items-center justify-between gap-4 border-t border-line pt-4">
+          <code className="font-mono text-[12px] text-muted">
+            <span className="text-subtle">$ </span>
+            {scan.root ? "sudo " : ""}python3 portforge.py &lt;target&gt; <span className="text-fg">{scan.cli}</span>
           </code>
+          <span className="hidden font-mono text-[11px] text-subtle sm:block">← → to switch</span>
         </div>
       </div>
     </div>

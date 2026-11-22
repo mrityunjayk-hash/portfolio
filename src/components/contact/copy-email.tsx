@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, Copy, Mail } from "lucide-react";
+import { ArrowUpRight, Check, Copy } from "lucide-react";
 
 export function CopyEmail({ email }: { email: string }) {
   const [copied, setCopied] = useState(false);
@@ -17,21 +17,23 @@ export function CopyEmail({ email }: { email: string }) {
   };
 
   return (
-    <div className="flex items-stretch overflow-hidden rounded-[4px] border border-line-strong">
-      <a
-        href={`mailto:${email}`}
-        className="flex min-w-0 flex-1 items-center gap-3 px-4 py-3.5 text-fg transition-colors hover:bg-white/[0.03]"
-      >
-        <Mail className="h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
-        <span className="truncate font-mono text-[13px] sm:text-sm">{email}</span>
+    <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b border-line-strong pb-5">
+      <a href={`mailto:${email}`} className="group min-w-0">
+        <span className="label-mono block">Email</span>
+        <span className="mt-2 flex items-center gap-2 text-[clamp(1.15rem,3.4vw,1.6rem)] tracking-tight text-fg">
+          <span className="truncate bg-[linear-gradient(var(--accent),var(--accent))] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-500 ease-[var(--ease-out-expo)] group-hover:bg-[length:100%_1px]">
+            {email}
+          </span>
+          <ArrowUpRight size={18} aria-hidden="true" className="shrink-0 text-accent transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </span>
       </a>
       <button
         type="button"
         onClick={copy}
-        className="flex w-24 shrink-0 items-center justify-center gap-1.5 border-l border-line-strong font-mono text-[11px] text-muted uppercase transition-colors hover:text-fg"
+        className="flex items-center gap-1.5 py-1 font-mono text-[11px] tracking-[0.06em] text-muted uppercase transition-colors hover:text-fg"
         aria-label={copied ? "Email copied" : "Copy email address"}
       >
-        {copied ? <Check size={14} className="text-accent" aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
+        {copied ? <Check size={13} className="text-accent" aria-hidden="true" /> : <Copy size={13} aria-hidden="true" />}
         {copied ? "Copied" : "Copy"}
       </button>
       <span className="sr-only" aria-live="polite">

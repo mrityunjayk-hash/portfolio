@@ -22,7 +22,7 @@ export function Contact() {
             email — or use the form.
           </p>
 
-          <div className="mt-10 space-y-3" data-reveal>
+          <div className="mt-12" data-reveal>
             <CopyEmail email={site.email} />
             {socials.map((s) => (
               <a
@@ -30,11 +30,11 @@ export function Contact() {
                 href={s.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between rounded-[4px] border border-line px-4 py-3.5 transition-colors hover:border-line-strong"
+                className="group flex items-center justify-between border-b border-line py-4 transition-colors"
               >
                 <span className="flex items-center gap-3 text-fg">
-                  <SocialIcon icon={s.icon} className="h-4 w-4 text-muted" />
-                  {s.label}
+                  <SocialIcon icon={s.icon} className="h-4 w-4 text-muted transition-colors group-hover:text-fg" />
+                  <span className="transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-1">{s.label}</span>
                 </span>
                 <span className="font-mono text-[12px] text-subtle transition-colors group-hover:text-fg">
                   {s.handle} ↗<span className="sr-only"> (opens in a new tab)</span>
