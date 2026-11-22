@@ -1,14 +1,9 @@
 /**
- * About section copy.
- * `title` lines render as one large heading. In paragraphs, wrap a phrase in
- * **double asterisks** to highlight it.
+ * About section copy — a single paragraph.
+ * Wrap a phrase in **double asterisks** to highlight it.
  */
 
 export const about = {
-  title: ["Offensive security,", "builder's mindset."],
-  paragraphs: [
-    "I'm **Mrityunjay Kumar** — an offensive security researcher focused on **web application and API security**. My work is about finding the places where software trusts the wrong thing: broken access control, authentication logic and workflows that can quietly be skipped.",
-    "I hunt in private bug bounty programs on **HackerOne** and **Bugcrowd**, where my reports have covered **authorization and IDOR flaws**, **authentication bypasses**, approval workflows that could be skipped and **credentials exposed through CI/CD pipelines**. I'm **eJPT** certified and keep sharpening my skills on Hack The Box, TryHackMe and PortSwigger's Web Security Academy.",
-    "When I want to understand a technique properly, I build it. **PortForge** reimplements network reconnaissance down to hand-built TCP packets, and **LLMSec** turns attacks on LLM applications into repeatable probes. Right now most of my time goes to the security of **RAG pipelines and tool-using agents**.",
-  ],
+  paragraph:
+    "I'm Mrityunjay, an offensive security researcher working mainly on **web application and API security**. Most of my vulnerability research happens in private bug bounty programs on HackerOne and Bugcrowd, where I test how production systems enforce trust between users, tenants and services. When I want to understand a technique properly, I build it — **PortForge** is a port scanner written from raw TCP packets up, and **LLMSec** turns attacks on LLM-powered applications into repeatable probes. That second project reflects where my curiosity is now: the security of **AI and LLM applications**, where the trust boundaries are still being drawn.",
 } as const;

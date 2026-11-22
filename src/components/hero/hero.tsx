@@ -1,8 +1,10 @@
-import { site } from "@/content/site";
+import { site, socials } from "@/content/site";
+import { SocialIcon } from "@/components/ui/icons";
 import { CtaLink, TextLink } from "@/components/ui/button-link";
 import { Parallax } from "@/components/ui/parallax";
 import { Magnetic } from "@/components/ui/magnetic";
 import { SurfaceMap } from "./surface-map";
+import { HeroReplay } from "./hero-replay";
 
 export function Hero() {
   return (
@@ -78,9 +80,25 @@ export function Hero() {
                 Get in touch
               </TextLink>
             </Magnetic>
+            <ul className="-ml-2 flex items-center" aria-label="Profiles">
+              {socials.map((s) => (
+                <li key={s.label}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${s.label} (opens in a new tab)`}
+                    className="inline-flex h-10 w-10 items-center justify-center text-muted transition-[color,transform] duration-300 hover:-translate-y-0.5 hover:text-fg"
+                  >
+                    <SocialIcon icon={s.icon} className="h-[18px] w-[18px]" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </Parallax>
+      <HeroReplay targetId="home" />
     </section>
   );
 }

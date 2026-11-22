@@ -270,6 +270,14 @@ html:not(.js) .mark {
   animation: fade-in 1s var(--ease-out-expo) both;
   animation-delay: var(--d, 0ms);
 }
+/* Off-screen reset so the hero entrance replays when the visitor returns. */
+.hero-reset .letter,
+.hero-reset .fade-in,
+.hero-reset .line-mask > span:not(.letter) {
+  animation: none;
+  opacity: 0;
+}
+
 @keyframes line-up {
   from {
     transform: translateY(105%);

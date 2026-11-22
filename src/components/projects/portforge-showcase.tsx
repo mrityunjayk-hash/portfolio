@@ -40,7 +40,7 @@ export function PortforgeShowcase({ project: p }: { project: Project }) {
           </div>
         </div>
 
-        <div className="lg:col-span-8 lg:pt-4" data-reveal="clip" style={{ "--reveal-delay": "150ms" } as React.CSSProperties}>
+        <div className="lg:col-span-8 lg:pt-4" data-reveal="scale" style={{ "--reveal-delay": "150ms" } as React.CSSProperties}>
           <FlagInstrument />
         </div>
       </div>

@@ -1,5 +1,4 @@
 import { about } from "@/content/about";
-import { RevealWords } from "@/components/ui/reveal-words";
 import { Parallax } from "@/components/ui/parallax";
 
 export function About() {
@@ -14,28 +13,16 @@ export function About() {
       </Parallax>
 
       <div className="container-x">
-        <p className="font-display text-2xl font-medium text-fg" data-reveal="left">
+        <h2 id="about-title" className="font-display text-2xl font-medium text-fg" data-reveal="left">
           About
-        </p>
-        <h2
-          id="about-title"
-          className="display mt-8 text-[clamp(2.6rem,7vw,5.5rem)] font-bold text-balance"
-          data-reveal="words"
-        >
-          {about.title.map((line, l) => (
-            <span key={line} className="block">
-              <RevealWords segments={[line]} startIndex={l * 3} />
-            </span>
-          ))}
         </h2>
-
-        <div className="mt-12 max-w-4xl space-y-6 text-[17px] leading-[1.75] text-muted sm:mt-14 sm:text-lg">
-          {about.paragraphs.map((p, i) => (
-            <p key={i} data-reveal="blur" style={{ "--reveal-delay": `${150 + i * 140}ms` } as React.CSSProperties}>
-              <Highlighted text={p} />
-            </p>
-          ))}
-        </div>
+        <p
+          className="mt-10 max-w-4xl text-[clamp(1.2rem,2.1vw,1.6rem)] leading-[1.65] text-muted"
+          data-reveal="blur"
+          style={{ "--reveal-delay": "150ms" } as React.CSSProperties}
+        >
+          <Highlighted text={about.paragraph} />
+        </p>
       </div>
     </section>
   );

@@ -1,7 +1,8 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
-import { AnimatePresence, motion, useInView } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { useReplayInView } from "@/components/ui/use-replay-in-view";
 import { FLAGS, SCANS } from "./scan-data";
 
 /**
@@ -29,9 +30,10 @@ export function FlagInstrument() {
   const [scanId, setScanId] = useState("xmas");
   const scan = SCANS.find((s) => s.id === scanId)!;
   const isUdp = scan.proto === "UDP";
-  // "Boot" the instrument the first time it scrolls into view.
+  // "Boot" the instrument each time it scrolls into view.
   const rootRef = useRef<HTMLDivElement>(null);
-  const inView = useInView(rootRef, { once: true, margin: "0px 0px -20% 0px" });
+  // Replays the boot sequence on every visit; resets once fully off screen.
+  const inView = useReplayInView(rootRef, { enterMargin: "0px 0px -20% 0px" });
   // Markup must not depend on the reduced-motion setting (it differs between
   // server and client), so booting is driven only by visibility.
   const booted = inView;
