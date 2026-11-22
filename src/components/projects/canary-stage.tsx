@@ -81,10 +81,11 @@ export function CanaryStage() {
   return (
     <div ref={ref} className="@container relative">
       {/* the thread that runs through the three acts */}
-      <div aria-hidden="true" className="absolute inset-x-0 top-[9px] hidden h-px @3xl:block">
-        <div className="h-full bg-gradient-to-r from-line via-line to-transparent" />
+      {/* 3px tall and clipped, so the travelling pulse ends exactly at the content edge */}
+      <div aria-hidden="true" className="absolute inset-x-0 top-[8px] hidden h-[3px] overflow-hidden @3xl:block">
+        <div className="absolute inset-x-0 top-px h-px bg-gradient-to-r from-line via-line to-transparent" />
         <motion.div
-          className="absolute inset-0 origin-left bg-gradient-to-r from-accent/70 via-line-strong to-transparent"
+          className="absolute inset-x-0 top-px h-px origin-left bg-gradient-to-r from-accent/70 via-line-strong to-transparent"
           style={{ scaleX: reduce ? 1 : scrollYProgress }}
         />
         {shownReached === 3 && (
