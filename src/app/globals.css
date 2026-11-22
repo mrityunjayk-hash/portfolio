@@ -32,8 +32,9 @@
   --color-accent: var(--accent);
   --color-accent-dim: var(--accent-dim);
   --color-danger: var(--danger);
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-display: var(--font-clash-display), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-fira-code), ui-monospace, SFMono-Regular, monospace;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -48,6 +49,8 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss03";
+  line-height: 1.6;
   overflow-x: clip;
   text-rendering: optimizeLegibility;
 }
@@ -79,18 +82,40 @@ body {
   }
 }
 
+/* Headings default to Clash Display; utilities (e.g. label-mono) still override. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  code,
+  pre,
+  kbd {
+    font-family: var(--font-mono);
+    font-variant-ligatures: none;
+  }
+}
+
 @utility label-mono {
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 0.08em;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
   text-transform: uppercase;
   color: var(--muted);
 }
 
 @utility display {
-  font-weight: 500;
-  letter-spacing: -0.045em;
-  line-height: 0.95;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 0.92;
 }
 
 @utility hairline-grid {
@@ -213,8 +238,8 @@ body {
 }
 .prose-research h2 {
   color: var(--fg);
-  font-size: 1.6rem;
-  letter-spacing: -0.03em;
+  font-size: 1.75rem;
+  letter-spacing: -0.01em;
   font-weight: 500;
   margin-top: 2.4em;
 }

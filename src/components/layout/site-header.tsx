@@ -223,7 +223,7 @@ export function SiteHeader() {
                           history.replaceState(null, "", `#${item.id}`);
                         }, 60);
                       }}
-                      className={`flex items-baseline justify-between py-4 text-3xl tracking-tight ${
+                      className={`flex items-baseline justify-between py-4 font-display text-3xl font-medium ${
                         current === item.id ? "text-accent" : "text-fg"
                       }`}
                     >

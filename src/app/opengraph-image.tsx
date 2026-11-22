@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
 import { site } from "@/content/site";
 
@@ -5,7 +7,8 @@ export const alt = `${site.name} — Offensive Security Researcher`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-export default function OpengraphImage() {
+export default async function OpengraphImage() {
+  const clash = await readFile(path.join(process.cwd(), "src/fonts/clash-display/ClashDisplay-Semibold.ttf"));
   const dots = Array.from({ length: 46 }, (_, i) => ({
     x: 640 + ((i * 137) % 520),
     y: 60 + ((i * 89) % 500),
@@ -49,8 +52,8 @@ export default function OpengraphImage() {
           OFFENSIVE SECURITY RESEARCHER
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 128, fontWeight: 600, letterSpacing: -6, lineHeight: 0.95 }}>{site.firstName}</div>
-          <div style={{ display: "flex", fontSize: 128, fontWeight: 600, letterSpacing: -6, lineHeight: 0.95, color: "#8a9099" }}>
+          <div style={{ fontFamily: "Clash Display", fontSize: 132, fontWeight: 600, letterSpacing: -2, lineHeight: 0.95 }}>{site.firstName}</div>
+          <div style={{ display: "flex", fontFamily: "Clash Display", fontSize: 132, fontWeight: 600, letterSpacing: -2, lineHeight: 0.95, color: "#8a9099" }}>
             {site.lastName}
             <span style={{ color: "#c6f432" }}>.</span>
           </div>
@@ -65,6 +68,6 @@ export default function OpengraphImage() {
         </div>
       </div>
     ),
-    size,
+    { ...size, fonts: [{ name: "Clash Display", data: clash, weight: 600, style: "normal" }] },
   );
 }

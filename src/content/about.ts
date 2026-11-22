@@ -1,12 +1,15 @@
-/** About section copy. Paragraphs render in order. */
+/**
+ * About section copy.
+ * `title` lines render as one large heading. In paragraphs, wrap a phrase in
+ * **double asterisks** to highlight it.
+ */
 
 export const about = {
-  statement:
-    "Most serious bugs aren't exotic. They're a missing check in a place everyone assumed was safe.",
+  title: ["Offensive security,", "builder's mindset."],
   paragraphs: [
-    "I work on the offensive side of security, mostly web applications and APIs. A lot of my time goes into reading how an application decides who is allowed to do what — and then testing what happens when that decision is made in the wrong place, against the wrong object, or not at all.",
-    "That has taken me through authorization and IDOR issues, authentication logic, approval workflows that can be skipped and credentials exposed through CI/CD pipelines, reported through private bug bounty programs on HackerOne and Bugcrowd.",
-    "When I want to understand a technique properly, I build it. PortForge reimplements network reconnaissance down to hand-built TCP packets; LLMSec turns LLM-application attacks into repeatable probes. Right now most of my curiosity goes to AI systems — RAG pipelines and agents that hold tools and secrets — where the trust boundaries are still being worked out.",
+    "I'm **Mrityunjay Kumar** — an offensive security researcher focused on **web application and API security**. My work is about finding the places where software trusts the wrong thing: broken access control, authentication logic and workflows that can quietly be skipped.",
+    "I hunt in private bug bounty programs on **HackerOne** and **Bugcrowd**, where my reports have covered **authorization and IDOR flaws**, **authentication bypasses**, approval workflows that could be skipped and **credentials exposed through CI/CD pipelines**. I'm **eJPT** certified and keep sharpening my skills on Hack The Box, TryHackMe and PortSwigger's Web Security Academy.",
+    "When I want to understand a technique properly, I build it. **PortForge** reimplements network reconnaissance down to hand-built TCP packets, and **LLMSec** turns attacks on LLM applications into repeatable probes. Right now most of my time goes to the security of **RAG pipelines and tool-using agents**.",
   ],
   method: [
     {

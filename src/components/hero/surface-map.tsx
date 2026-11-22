@@ -36,7 +36,7 @@ export function SurfaceMap({ className = "" }: { className?: string }) {
     if (!ctx) return;
 
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const monoFamily = getComputedStyle(document.documentElement).getPropertyValue("--font-geist-mono").trim();
+    const monoFamily = getComputedStyle(document.documentElement).getPropertyValue("--font-fira-code").trim();
     const labelFont = `11px ${monoFamily ? `${monoFamily}, ` : ""}ui-monospace, monospace`;
     let w = 0;
     let h = 0;

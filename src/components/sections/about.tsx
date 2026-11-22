@@ -1,20 +1,32 @@
 import { about } from "@/content/about";
-import { SectionHeading } from "@/components/ui/section-heading";
 
 export function About() {
   return (
     <section id="about" aria-labelledby="about-title" className="relative py-24 sm:py-32">
       <div className="container-x">
-        <SectionHeading index="01" label="About" id="about-title" title={about.statement} />
+        <p className="label-mono flex items-center gap-3" data-reveal>
+          <span className="text-accent">01</span>
+          <span className="h-px w-8 bg-line-strong" aria-hidden="true" />
+          About
+        </p>
+        <h2
+          id="about-title"
+          className="display mt-8 text-[clamp(2.6rem,7vw,5.5rem)] font-bold text-balance"
+          data-reveal
+        >
+          {about.title.map((line) => (
+            <span key={line} className="block">
+              {line}
+            </span>
+          ))}
+        </h2>
 
-        <div className="grid gap-10 md:grid-cols-12">
-          <div className="space-y-6 text-[17px] leading-relaxed text-muted md:col-span-8 md:col-start-4 lg:col-span-7 lg:col-start-4">
-            {about.paragraphs.map((p, i) => (
-              <p key={i} data-reveal style={{ "--reveal-delay": `${i * 80}ms` } as React.CSSProperties} className={i === 0 ? "text-fg" : ""}>
-                {p}
-              </p>
-            ))}
-          </div>
+        <div className="mt-12 max-w-4xl space-y-6 text-[17px] leading-[1.75] text-muted sm:mt-14 sm:text-lg">
+          {about.paragraphs.map((p, i) => (
+            <p key={i} data-reveal style={{ "--reveal-delay": `${i * 80}ms` } as React.CSSProperties}>
+              <Highlighted text={p} />
+            </p>
+          ))}
         </div>
 
         <div className="mt-24 md:mt-32">
@@ -59,5 +71,18 @@ export function About() {
         </div>
       </div>
     </section>
+  );
+}
+
+/** Renders **phrase** segments as highlighted text. */
+function Highlighted({ text }: { text: string }) {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, i) =>
+    i % 2 ? (
+      <strong key={i} className="font-semibold text-fg">
+        {part}
+      </strong>
+    ) : (
+      part
+    ),
   );
 }

@@ -95,8 +95,6 @@ export const arsenal: ArsenalGroup[] = [
     title: "Platforms & OS",
     blurb: "Where the work runs.",
     items: [
-      { name: "Kali Linux", logo: "kali" },
-      { name: "Parrot OS", logo: "parrot" },
       { name: "Linux", logo: "linux" },
       { name: "Windows", logo: "windows" },
       { name: "Docker", logo: "docker" },

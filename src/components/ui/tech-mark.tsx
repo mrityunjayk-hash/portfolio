@@ -1,4 +1,4 @@
-import { logos, type LogoId } from "@/content/logos";
+import { logos, type Logo, type LogoId } from "@/content/logos";
 
 /**
  * A technology mark: the real brand logo when one exists, otherwise a
@@ -25,12 +25,15 @@ type Props = {
 
 export function TechMark({ logo, mark, size = 20, className = "", brandOnHover = true }: Props) {
   if (logo) {
-    const l = logos[logo];
+    const l: Logo = logos[logo];
+    // Wordmarks get extra width so they stay legible next to square marks.
+    const width = l.aspect ? Math.round(size * 2.2) : size;
+    const height = l.aspect ? Math.round(width / l.aspect) : size;
     return (
       <svg
-        viewBox={"viewBox" in l && l.viewBox ? l.viewBox : "0 0 24 24"}
-        width={size}
-        height={size}
+        viewBox={l.viewBox ?? "0 0 24 24"}
+        width={width}
+        height={height}
         aria-hidden="true"
         className={`shrink-0 fill-current transition-colors duration-300 ${
           brandOnHover ? "group-hover:text-[var(--brand)] group-focus-visible:text-[var(--brand)] group-focus-within:text-[var(--brand)]" : ""

@@ -55,7 +55,7 @@ export function ResearchIndex({ posts }: { posts: Post[] }) {
                   >
                     <span className="font-mono text-[12px] text-subtle md:col-span-2">{fmt(p.date)}</span>
                     <span className="md:col-span-7">
-                      <span className="flex items-start gap-2 text-xl tracking-tight text-fg transition-colors group-hover:text-accent sm:text-2xl">
+                      <span className="flex items-start gap-2 font-display text-xl font-medium text-fg transition-colors group-hover:text-accent sm:text-2xl">
                         {p.title}
                         <ArrowUpRight size={18} className="mt-1 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
                       </span>
@@ -123,7 +123,7 @@ function EmptyState() {
           </span>
         </div>
         <div className="md:col-span-8">
-          <p className="text-2xl tracking-tight text-fg sm:text-3xl">First writeups are in preparation.</p>
+          <p className="font-display text-2xl font-medium text-fg sm:text-3xl">First writeups are in preparation.</p>
           <p className="mt-3 max-w-xl leading-relaxed text-muted">
             Writeups on web and API security, AI application security and security tooling will appear here as they are
             published — filterable by category, each with its own page.

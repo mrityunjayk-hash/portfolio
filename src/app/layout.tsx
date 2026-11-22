@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fira_Code, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { MotionConfig } from "motion/react";
 import { site, socials } from "@/content/site";
 import { SiteHeader } from "@/components/layout/site-header";
@@ -7,8 +8,18 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { RevealObserver } from "@/components/ui/reveal-observer";
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"], display: "swap" });
+// Typography system: Clash Display (headings), Inter (body, navigation), Fira Code (technical labels, code).
+const clashDisplay = localFont({
+  variable: "--font-clash-display",
+  display: "swap",
+  src: [
+    { path: "../fonts/clash-display/ClashDisplay-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/clash-display/ClashDisplay-Semibold.woff2", weight: "600", style: "normal" },
+    { path: "../fonts/clash-display/ClashDisplay-Bold.woff2", weight: "700", style: "normal" },
+  ],
+});
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
+const firaCode = Fira_Code({ variable: "--font-fira-code", subsets: ["latin"], display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -65,7 +76,7 @@ const personJsonLd = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${clashDisplay.variable} ${inter.variable} ${firaCode.variable}`} suppressHydrationWarning>
       <head>
         {/* Flags JS so scroll-reveal styles only apply when they can be undone. */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
