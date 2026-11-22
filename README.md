@@ -2,6 +2,8 @@
 
 Personal site for **Mrityunjay Kumar**, offensive security researcher (web & API pentesting, vulnerability research, AI/LLM application security).
 
+**Live:** https://mrityunjay-kumar.vercel.app
+
 Built with Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, Motion and MDX. Deployed on Vercel.
 
 ## Quick start
